@@ -787,6 +787,10 @@ metaslab_class_fragmentation(metaslab_class_t *mc)
 {
 	vdev_t *rvd = mc->mc_spa->spa_root_vdev;
 	uint64_t fragmentation = 0;
+	uint64_t space = metaslab_class_get_space(mc);
+
+	if (space == 0)
+		return (ZFS_FRAG_INVALID);
 
 	spa_config_enter(mc->mc_spa, SCL_VDEV, FTAG, RW_READER);
 
@@ -819,7 +823,7 @@ metaslab_class_fragmentation(metaslab_class_t *mc)
 		fragmentation += mg->mg_fragmentation *
 		    metaslab_group_get_space(mg);
 	}
-	fragmentation /= metaslab_class_get_space(mc);
+	fragmentation /= space;
 
 	ASSERT3U(fragmentation, <=, 100);
 	spa_config_exit(mc->mc_spa, SCL_VDEV, FTAG);
