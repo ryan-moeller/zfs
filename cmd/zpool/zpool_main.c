@@ -7140,6 +7140,7 @@ collect_list_stats(zpool_handle_t *zhp, const char *name, nvlist_t *nv,
 				break;
 
 			case ZPOOL_PROP_NAME:
+			case ZPOOL_PROP_INVAL:
 				break;
 
 			default:
